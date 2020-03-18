@@ -1,0 +1,7 @@
+DROP TABLE IF EXISTS completed;
+
+DROP TABLE IF EXISTS classes;
+
+DROP TABLE IF EXISTS marketcenter;
+
+DROP TABLE IF EXISTS users;
