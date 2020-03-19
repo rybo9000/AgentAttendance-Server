@@ -11,7 +11,7 @@ INSERT INTO marketcenter
 /* SEED DATA INTO USERS TABLE */
 
 INSERT INTO users
-    (id, firstname, lastname, username, userpassword, lvl, email, mcid)
+    (id, firstname, lastname, username, password, lvl, email, mcid)
     VALUES
         (1, 'Ryan', 'Fielder', 'rfielder', 'testpass1234', 4, 'ryan.fielder@hotmail.com', 1),
         (2, 'John', 'Smith', 'jsmith', 'dog1997', 1, 'john.smith@aol.com', 2),

@@ -36,8 +36,6 @@ MCRouter
         }
 
         const newClass = { classname, mcid }
-
-        res.send(newClass);
         
         const knexInstance = req.app.get('db')
         
@@ -66,6 +64,59 @@ MCRouter
                 res.json(results)
             })
             .catch(next)
+    })
+    .post(jsonParser, (req, res, next) => {
+        
+        const knexInstance = req.app.get('db')
+        
+        // CHECK TO SEE IF USERNAME ALREADY EXISTS
+
+        const checkUserName = req.body.username;
+
+        MCService.checkForUserName(knexInstance, checkUserName)
+            .then(result => {
+                
+                if (Number(result[0].count)) {
+                    return res.status(403).json({error : 'Username already exists'});
+                }
+
+            
+            })
+            .catch(next)
+            
+        
+        // IF USERNAME DOES NOT EXIST BUILD OBECT TO SEND TO FUNCTION
+        
+        const { firstname, lastname, username, password, email } = req.body
+        const mcid = req.get('mcid')
+        const lvl = 1;
+
+        const newUser = {firstname, lastname, username, password, lvl, email, mcid};
+
+        for (const [key, value] of Object.entries(newUser)) {
+            if (value == null) {
+                return res.status(400).json({
+                    error: { message: `Missing '${key}' in request body` }
+                })
+            }
+        }
+
+
+        // CALL FUNCTION TO POST USER
+
+        MCService.addUser(knexInstance, newUser)
+            .then(result => {
+                res
+                .status(201)
+                .location(`api/users/${result.id}`)
+                .json(result)
+
+            })
+            .catch(next)
+
+
+
+
     })
 
 

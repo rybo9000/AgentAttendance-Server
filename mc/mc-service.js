@@ -19,6 +19,18 @@ const MCService = {
             .then(rows => {
                 return rows[0]
             })
+    },
+    addUser(knex, username) {
+        return knex
+            .insert(username)
+            .into('users')
+            .returning('*')
+            .then(rows => {
+                return rows[0]
+            })
+    },
+    checkForUserName(knex, username) {
+        return knex('users').where({username}).count('*')
     }
 
 }

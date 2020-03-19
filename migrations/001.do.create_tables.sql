@@ -5,7 +5,7 @@ CREATE TABLE users (
     firstname TEXT NOT NULL,
     lastname TEXT NOT NULL,
     username TEXT NOT NULL,
-    userpassword TEXT NOT NULL,
+    password TEXT NOT NULL,
     lvl INTEGER NOT NULL,
     email TEXT NOT NULL
 );
