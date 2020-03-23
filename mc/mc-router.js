@@ -1,6 +1,7 @@
 const express = require('express');
 const MCService = require('./mc-service');
-const xss = require('xss');
+const JWT = require('jsonwebtoken');
+const config = require('../src/config');
 
 const MCRouter = express.Router();
 const jsonParser = express.json();
@@ -23,9 +24,7 @@ MCRouter
     })
     .post(jsonParser, (req, res, next) => {
         
-        const { classname } = req.body;
-
-        const mcid = req.get('mcid');
+        const { classname, mcid } = req.body;
         
         if (!classname) {
             res.status(400).json({ error: 'Please provide a classname value' })
@@ -71,53 +70,134 @@ MCRouter
         
         // CHECK TO SEE IF USERNAME ALREADY EXISTS
 
-        const checkUserName = req.body.username;
+        const { username, mcid } = req.body;
 
-        MCService.checkForUserName(knexInstance, checkUserName)
+        MCService.checkForUserName(knexInstance, username, mcid)
             .then(result => {
                 
                 if (Number(result[0].count)) {
                     return res.status(403).json({error : 'Username already exists'});
                 }
 
+                else {
+                    // IF USERNAME DOES NOT EXIST BUILD OBECT TO SEND TO FUNCTION
+                    
+                    const { firstname, lastname, username, password, email, mcid } = req.body
+
+                    const lvl = 1;
+                    
+                    const newUser = {firstname, lastname, username, password, lvl, email, mcid};
+
+                    for (const [key, value] of Object.entries(newUser)) {
+                        if (value == null) {
+                            return res.status(400).json({
+                                error: { message: `Missing '${key}' in request body` }
+                            })
+                        }
+                    }
+
+
+                    // CALL FUNCTION TO POST USER
+
+                    MCService.addUser(knexInstance, newUser)
+                        .then(result => {
+                            
+                            // console.log(result);
+                            
+                            // res
+                            // .status(201)
+                            // .location(`api/users/${result.id}`)
+                            // .json(result)
+
+                            const token = JWT.sign({
+                                iss: 'Agent Attendance',
+                                mcid: mcid,
+                                id: result.id,
+                                lvl: result.lvl,
+                                iat: new Date().getTime(),
+                            },
+                            config.JWT_SECRET,
+                            { expiresIn: '2h' })
+
+                            res.status(200).json( { token })
+
+                        })
+                        .catch(next)
+
+                }
             
             })
             .catch(next)
-            
-        
-        // IF USERNAME DOES NOT EXIST BUILD OBECT TO SEND TO FUNCTION
-        
-        const { firstname, lastname, username, password, email } = req.body
-        const mcid = req.get('mcid')
-        const lvl = 1;
-
-        const newUser = {firstname, lastname, username, password, lvl, email, mcid};
-
-        for (const [key, value] of Object.entries(newUser)) {
-            if (value == null) {
-                return res.status(400).json({
-                    error: { message: `Missing '${key}' in request body` }
-                })
-            }
-        }
-
-
-        // CALL FUNCTION TO POST USER
-
-        MCService.addUser(knexInstance, newUser)
-            .then(result => {
-                res
-                .status(201)
-                .location(`api/users/${result.id}`)
-                .json(result)
-
-            })
-            .catch(next)
-
-
-
 
     })
+
+    MCRouter
+        .route('/stats/totalclasses')
+        .get((req, res, next) => {
+            const mcid = req.get('mcid');
+            
+            if (!mcid) {
+                res.status(400).json({ error: 'Please provide an mcid value' })
+            }
+
+            const knexInstance = req.app.get('db')
+            MCService.getTotalClasses(knexInstance, mcid)
+                .then(results => {
+                    res.json(results)
+                })
+                .catch(next)
+        })
+
+    MCRouter
+        .route('/stats/totalcheckins')
+        .get((req, res, next) => {
+            const mcid = req.get('mcid');
+            
+            if (!mcid) {
+                res.status(400).json({ error: 'Please provide an mcid value' })
+            }
+
+            const knexInstance = req.app.get('db')
+            MCService.getTotalCheckIns(knexInstance, mcid)
+                .then(results => {
+                    res.json(results)
+                })
+                .catch(next)
+    })
+
+    MCRouter
+        .route('/stats/totalagents')
+        .get((req, res, next) => {
+            const mcid = req.get('mcid');
+            
+            if (!mcid) {
+                res.status(400).json({ error: 'Please provide an mcid value' })
+            }
+
+            const knexInstance = req.app.get('db')
+            MCService.getTotalAgents(knexInstance, mcid)
+                .then(results => {
+                    res.json(results)
+                })
+                .catch(next)
+    })
+
+    MCRouter
+    .route('/stats/getname')
+    .get((req, res, next) => {
+        const mcid = req.get('mcid');
+        
+        if (!mcid) {
+            res.status(400).json({ error: 'Please provide an mcid value' })
+        }
+
+        const knexInstance = req.app.get('db')
+        MCService.getMCName(knexInstance, mcid)
+            .then(results => {
+                res.json(results)
+            })
+            .catch(next)
+})
 
 
 module.exports = MCRouter;

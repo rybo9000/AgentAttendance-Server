@@ -4,7 +4,9 @@ const morgan = require('morgan');
 const cors = require('cors');
 const helmet = require('helmet');
 const statsRouter = require('../stats/stats-router');
-const MCRouter = require('../mc/mc-router.js');
+const MCRouter = require('../mc/mc-router');
+const SignupRouter = require('../signup/signup-router');
+const SignInRouter = require('../signin/signin-router');
 const { NODE_ENV } = require('./config');
 
 const app = express();
@@ -19,6 +21,8 @@ app.use(helmet());
 
 app.use('/api/stats', statsRouter);
 app.use('/api/mc', MCRouter);
+app.use('/api/signup', SignupRouter);
+app.use('/api/signin', SignInRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response

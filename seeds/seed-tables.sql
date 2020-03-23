@@ -1,12 +1,12 @@
 /* SEED DATA INTO MARKETCENTER TABLE */
 
 INSERT INTO marketcenter
-    (id, mcname, checkins)
+    (id, mcname, checkins, kwid)
     VALUES
-        (1, 'Georgia Central', 34),
-        (2, 'Austin North', 199),
-        (3, 'Portland MC', 300),
-        (4, 'Iowa South MC', 199);
+        (1, 'Georgia Central', 34, 33),
+        (2, 'Austin North', 199, 55),
+        (3, 'Portland MC', 300, 66),
+        (4, 'Iowa South MC', 199, 77);
 
 /* SEED DATA INTO USERS TABLE */
 

@@ -29,8 +29,23 @@ const MCService = {
                 return rows[0]
             })
     },
-    checkForUserName(knex, username) {
-        return knex('users').where({username}).count('*')
+    checkForUserName(knex, username, mcid) {
+        return knex('users').where({username, mcid}).count('*')
+    },
+    getTotalClasses(knex, mcid) {
+        return knex('classes').where({ mcid }).count('*')
+    },
+    getTotalCheckIns(knex, mcid) {
+        return knex('completed').where({ mcid }).count('*')
+    },
+    getTotalAgents(knex, mcid) {
+        return knex('users').where({ mcid }).count('*')
+    },
+    getMCName(knex, mcid) {
+        return knex
+            .select('mcname')
+            .from('marketcenter')
+            .where ({ id: mcid })
     }
 
 }
