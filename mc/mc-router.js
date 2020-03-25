@@ -1,7 +1,5 @@
 const express = require('express');
 const MCService = require('./mc-service');
-const JWT = require('jsonwebtoken');
-const config = require('../src/config');
 
 const MCRouter = express.Router();
 const jsonParser = express.json();
@@ -102,24 +100,12 @@ MCRouter
                     MCService.addUser(knexInstance, newUser)
                         .then(result => {
                             
-                            // console.log(result);
+                            console.log(result);
                             
-                            // res
-                            // .status(201)
-                            // .location(`api/users/${result.id}`)
-                            // .json(result)
-
-                            const token = JWT.sign({
-                                iss: 'Agent Attendance',
-                                mcid: mcid,
-                                id: result.id,
-                                lvl: result.lvl,
-                                iat: new Date().getTime(),
-                            },
-                            config.JWT_SECRET,
-                            { expiresIn: '2h' })
-
-                            res.status(200).json( { token })
+                            res
+                            .status(202)
+                            .location(`api/users/${result.id}`)
+                            .json(result)
 
                         })
                         .catch(next)

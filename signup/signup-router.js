@@ -71,10 +71,6 @@ SignupRouter
             })
             .catch(next)
         }
-
-        // IF NEW ISSUE JWT
-
-        // IF NEW REDIRECT TO MAIN
  
 
     })

@@ -21,13 +21,20 @@ const MCService = {
             })
     },
     addUser(knex, username) {
-        return knex
-            .insert(username)
-            .into('users')
+        return knex('users')
             .returning('*')
-            .then(rows => {
-                return rows[0]
+            .insert({
+                firstname: username.firstname,
+                lastname: username.lastname,
+                username: username.username,
+                password: username.password,
+                lvl: username.lvl,
+                email: username.email,
+                mcid: username.mcid
             })
+            
+            
+
     },
     checkForUserName(knex, username, mcid) {
         return knex('users').where({username, mcid}).count('*')
