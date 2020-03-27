@@ -8,6 +8,7 @@ const MCRouter = require('../mc/mc-router');
 const SignupRouter = require('../signup/signup-router');
 const SignInRouter = require('../signin/signin-router');
 const CheckInRouter = require('../checkin/checkin-router');
+const ReportsRouter = require('../reports/reports-router');
 const { NODE_ENV } = require('./config');
 
 const app = express();
@@ -25,6 +26,7 @@ app.use('/api/mc', MCRouter)
 app.use('/api/signup', SignupRouter)
 app.use('/api/signin', SignInRouter)
 app.use('/api/checkin', CheckInRouter)
+app.use('/api/reports', ReportsRouter)
 
 app.use(function errorHandler(error, req, res, next) {
     let response
