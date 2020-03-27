@@ -14,7 +14,7 @@ const { NODE_ENV } = require('./config');
 const app = express();
 
 var corsOptions = {
-    origin: '*',
+    origin: 'https://agent-attendance.now.sh/',
     optionsSuccessStatus: 200 
   }
 
