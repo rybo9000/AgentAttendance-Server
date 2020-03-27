@@ -13,18 +13,12 @@ const { NODE_ENV } = require('./config');
 
 const app = express();
 
-var corsOptions = {
-    origin: 'https://agent-attendance.now.sh/',
-    optionsSuccessStatus: 200 
-  }
-
-
 const morganOption = (NODE_ENV === 'production')
     ? 'tiny'
     : 'common';
 
 app.use(morgan(morganOption));
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(helmet());
 
 app.use('/api/stats', statsRouter)
