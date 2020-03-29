@@ -1,26 +1,67 @@
-# Express Boilerplate!
+# AGENT ATTENDANCE API
 
-This is a boilerplate project used for starting new projects!
+## The Back-End application which allows administrators / instructors to take attendance for classes and meetings
 
-## Set up
+**[FRONT-END GITHUB LINK](https://github.com/rybo9000/AgentAttendance)**
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+### What technology is this built with?
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+- NODEJS
+- EXPRESSJS
 
-## Scripts
+### How Does It Work?
 
-Start the application `npm start`
+1. An administrator will need to create an account and then login
+2. Once logged in an administrator will need to create classes and then add users
+3. After all information is created you can start taking attendance by clicking the class links on the **Main** page.
+4. Users will need to enter their username / password at the check-in page to have their attendance be recorded.
+5. After attendance is taken administrators can then run an attendance report in the **Reports** section.
 
-Start nodemon for the application `npm run dev`
+### Current Endpoints V 1.0 *(Refactor Coming Soon)*
 
-Run the tests `npm test`
+**/api/stats/marketcenters**
+*Get total number of market centers subscribed*
 
-## Deploying
+**/api/stats/classes**
+*Get total number of classes created*
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch.
+
+app.use('/api/stats', statsRouter)
+app.use('/api/mc', MCRouter)
+app.use('/api/signup', SignupRouter)
+app.use('/api/signin', SignInRouter)
+app.use('/api/checkin', CheckInRouter)
+app.use('/api/reports', ReportsRouter)
+
+statsRouter    
+    .route('/classes')
+    .get((req, res, next) => {
+        const knexInstance = req.app.get('db')
+        StatsService.getTotalClasses(knexInstance)
+            .then(results => {
+                res.json(results)
+            })
+            .catch(next)
+    })
+
+statsRouter
+    .route('/agents')
+    .get((req, res, next) => {
+        const knexInstance = req.app.get('db')
+        StatsService.getTotalAgents(knexInstance)
+            .then(results => {
+                res.json(results)
+            })
+            .catch(next)
+    })
+
+statsRouter
+    .route('/checkins')
+    .get((req, res, next) => {
+        const knexInstance = req.app.get('db')
+        StatsService.getTotalCheckIns(knexInstance)
+            .then(results => {
+                res.json(results)
+            })
+            .catch(next)
+    })

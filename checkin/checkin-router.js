@@ -18,7 +18,7 @@ CheckInRouter
         CheckInService.verifyCredentials(knexInstance, username, password, mcid)
             .then(response => {
                 if (response.length !== 1) {
-                    res.status(400).json({ error: 'Invalid Credentials' })
+                    res.status(400).json({ notification: 'Invalid Credentials' })
                 } else {
                     
                     const userid = response[0].id;
@@ -27,15 +27,15 @@ CheckInRouter
                     CheckInService.verifyDuplicates(knexInstance, userid, classid, mcid, completed) 
                         .then(response => {
                             if (response.length > 0) {
-                                res.status(403).json({ error: 'User is already signed in to this class' })
+                                res.status(403).json({ notification: 'User is already signed in to this class' })
                             }
                             else {
                                 
                                 const newCheckIn = {userid, classid, mcid, completed};
                                 
                                 CheckInService.CheckIn(knexInstance, newCheckIn)
-                                    .then(response => console.log(response))
-                                    .catch(res.json({ error: response}))
+                                    .then(res.status(201).json({ notification: 'User Signed In!'}))
+                                    .catch()
                                     
 
                             }

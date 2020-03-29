@@ -46,6 +46,23 @@ MCRouter
             })
     })
 
+    MCRouter
+    .route('/class')
+    .get((req, res, next) => {
+        const { classid } = req.query;
+        
+        if (!classid) {
+            res.status(400).json({ error: 'Please provide an classid value' })
+        }
+
+        const knexInstance = req.app.get('db')
+        MCService.getClass(knexInstance, classid)
+            .then(results => {
+                res.json(results)
+            })
+            .catch(next)
+    })
+
 MCRouter
     .route('/users')
     .get((req, res, next) => {

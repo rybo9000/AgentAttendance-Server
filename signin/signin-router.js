@@ -20,7 +20,7 @@ SignInRouter
         SignInService.login(knexInstance, username, password, mcid)
             .then(response => {
                 if (!response[0]) {
-                    res.status(403).json({ error: 'invalid username / password' })
+                    res.status(403).json({ error: 'Invalid Username / Password.' })
                 } else {
                     const token = JWT.sign({
                         iss: 'Agent Attendance',

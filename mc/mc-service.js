@@ -5,6 +5,12 @@ const MCService = {
             .from('classes')
             .where({ mcid })
     },
+    getClass(knex, id) {
+        return knex
+            .select('*')
+            .from('classes')
+            .where({ id })
+    },
     listUsers(knex, mcid) {
         return knex
             .select('*')
