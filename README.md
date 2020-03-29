@@ -8,6 +8,7 @@
 
 - NODEJS
 - EXPRESSJS
+- POSTGRESQL
 
 ### How Does It Work?
 
@@ -19,49 +20,56 @@
 
 ### Current Endpoints V 1.0 *(Refactor Coming Soon)*
 
-**/api/stats/marketcenters**
+**GET - /api/stats/marketcenters**
 *Get total number of market centers subscribed*
 
-**/api/stats/classes**
+**GET - /api/stats/classes**
 *Get total number of classes created*
 
+**GET - /api/stats/agents**
+*Get total number of users created*
 
-app.use('/api/stats', statsRouter)
-app.use('/api/mc', MCRouter)
-app.use('/api/signup', SignupRouter)
-app.use('/api/signin', SignInRouter)
-app.use('/api/checkin', CheckInRouter)
-app.use('/api/reports', ReportsRouter)
+**GET - /api/stats/checkins**
+*Get total number of check-ins completed*
 
-statsRouter    
-    .route('/classes')
-    .get((req, res, next) => {
-        const knexInstance = req.app.get('db')
-        StatsService.getTotalClasses(knexInstance)
-            .then(results => {
-                res.json(results)
-            })
-            .catch(next)
-    })
+**GET - /api/mc/classes**
+*Get list of classes for a market center*
 
-statsRouter
-    .route('/agents')
-    .get((req, res, next) => {
-        const knexInstance = req.app.get('db')
-        StatsService.getTotalAgents(knexInstance)
-            .then(results => {
-                res.json(results)
-            })
-            .catch(next)
-    })
+**POST - /api/mc/classes**
+*Add a new class to a market center*
 
-statsRouter
-    .route('/checkins')
-    .get((req, res, next) => {
-        const knexInstance = req.app.get('db')
-        StatsService.getTotalCheckIns(knexInstance)
-            .then(results => {
-                res.json(results)
-            })
-            .catch(next)
-    })
+**GET - /api/mc/class**
+*Get a single class by ID*
+
+**GET - /api/mc/users**
+*Get a list of users for a market center*
+
+**POST - /api/mc/users**
+*Add a new user to a market center*
+
+**GET - /api/mc/stats/totalclasses**
+*Get the total number of classes for a market center*
+
+**GET - /api/mc/stats/totalcheckins**
+*Get the total number of check-ins for a market center*
+
+**GET - /api/mc/stats/totalagents**
+*Get the total number of users for a market center*
+
+**GET - /api/mc/stats/getname**
+*Get the name of a market center by ID*
+
+**POST - /api/signup/marketcenter**
+*Create a new market center*
+
+**POST - /api/signin**
+*Sign in to the application with your credentials and receive JWT*
+
+**GET - /api/signin/classes**
+*Get a full list of market centers to select for sign in*
+
+**POST - /api/checkin**
+*Check-in a user to a class*
+
+**GET - /api/reports/byclass**
+*Get a list of users completed by class*
