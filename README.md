@@ -18,58 +18,58 @@
 4. Users will need to enter their username / password at the check-in page to have their attendance be recorded.
 5. After attendance is taken administrators can then run an attendance report in the **Reports** section.
 
-### Current Endpoints V 1.0 *(Refactor Coming Soon)*
+### Current Endpoints V 1.0 _(Refactor Coming Soon)_
 
 **GET - /api/stats/marketcenters**
-*Get total number of market centers subscribed*
+_Get total number of market centers subscribed_
 
 **GET - /api/stats/classes**
-*Get total number of classes created*
+_Get total number of classes created_
 
 **GET - /api/stats/agents**
-*Get total number of users created*
+_Get total number of users created_
 
 **GET - /api/stats/checkins**
-*Get total number of check-ins completed*
+_Get total number of check-ins completed_
 
 **GET - /api/mc/classes**
-*Get list of classes for a market center*
+_Get list of classes for a market center_
 
 **POST - /api/mc/classes**
-*Add a new class to a market center*
+_Add a new class to a market center_
 
 **GET - /api/mc/class**
-*Get a single class by ID*
+_Get a single class by ID_
 
 **GET - /api/mc/users**
-*Get a list of users for a market center*
+_Get a list of users for a market center_
 
 **POST - /api/mc/users**
-*Add a new user to a market center*
+_Add a new user to a market center_
 
 **GET - /api/mc/stats/totalclasses**
-*Get the total number of classes for a market center*
+_Get the total number of classes for a market center_
 
 **GET - /api/mc/stats/totalcheckins**
-*Get the total number of check-ins for a market center*
+_Get the total number of check-ins for a market center_
 
 **GET - /api/mc/stats/totalagents**
-*Get the total number of users for a market center*
+_Get the total number of users for a market center_
 
 **GET - /api/mc/stats/getname**
-*Get the name of a market center by ID*
+_Get the name of a market center by ID_
 
 **POST - /api/signup/marketcenter**
-*Create a new market center*
+_Create a new market center_
 
 **POST - /api/signin**
-*Sign in to the application with your credentials and receive JWT*
+_Sign in to the application with your credentials and receive JWT_
 
 **GET - /api/signin/classes**
-*Get a full list of market centers to select for sign in*
+_Get a full list of market centers to select for sign in_
 
 **POST - /api/checkin**
-*Check-in a user to a class*
+_Check-in a user to a class_
 
 **GET - /api/reports/byclass**
-*Get a list of users completed by class*
+_Get a list of users completed by class_

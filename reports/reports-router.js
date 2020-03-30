@@ -1,31 +1,25 @@
-const express = require('express');
-const ReportsService = require('./reports-service')
-
+const express = require("express");
+const ReportsService = require("./reports-service");
 
 const ReportsRouter = express.Router();
 const jsonParser = express.json();
 
-ReportsRouter
-    .route('/byclass')
-    .get(jsonParser, (req, res, next) => {
-        
-        const knexInstance = req.app.get('db')
-        
-        const { classid, mcid } = req.query
+ReportsRouter.route("/byclass").get(jsonParser, (req, res, next) => {
+  const knexInstance = req.app.get("db");
 
-        if (!classid) {
-            res.status(400).json({ error: 'Please provide a classid value'})
-        }
+  const { classid, mcid } = req.query;
 
-        if (!mcid) {
-            res.status(400).json({ error: 'Please provide an mcid value'})
-        }
+  if (!classid) {
+    res.status(400).json({ error: "Please provide a classid value" });
+  }
 
-        ReportsService.getCompletedClass(knexInstance, classid, mcid)
-            .then(response => res.status(200).json(response))
+  if (!mcid) {
+    res.status(400).json({ error: "Please provide an mcid value" });
+  }
 
-
-    })
+  ReportsService.getCompletedClass(knexInstance, classid, mcid).then(response =>
+    res.status(200).json(response)
+  );
+});
 
 module.exports = ReportsRouter;
-
