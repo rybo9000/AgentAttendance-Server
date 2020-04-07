@@ -19,7 +19,7 @@ SignupRouter.route("/marketcenter").post(jsonParser, (req, res, next) => {
     // CHECK FOR EXISTING KWID
 
     SignupService.findExistingMC(knexInstance, kwid)
-      .then(response => {
+      .then((response) => {
         if (Number(response[0].count) > 0) {
           res
             .status(403)
@@ -36,7 +36,7 @@ SignupRouter.route("/marketcenter").post(jsonParser, (req, res, next) => {
           const lvl = 3;
 
           SignupService.createNewMC(knexInstance, newMC)
-            .then(response => {
+            .then((response) => {
               const mcid = response.id;
 
               const newAdmin = {
@@ -46,11 +46,11 @@ SignupRouter.route("/marketcenter").post(jsonParser, (req, res, next) => {
                 password,
                 lvl,
                 email,
-                mcid
+                mcid,
               };
 
               SignupService.createNewAdmin(knexInstance, newAdmin).then(
-                response => {
+                (response) => {
                   const token = JWT.sign(
                     {
                       iss: "Agent Attendance",
@@ -59,13 +59,13 @@ SignupRouter.route("/marketcenter").post(jsonParser, (req, res, next) => {
                       lvl: response.lvl,
                       iat: new Date().getTime(),
                       given_name: response.firstname,
-                      family_name: response.lastname
+                      family_name: response.lastname,
                     },
                     config.JWT_SECRET,
                     { expiresIn: "2h" }
                   );
 
-                  res.status(200).json(token);
+                  res.status(201).json(token);
                 }
               );
             })

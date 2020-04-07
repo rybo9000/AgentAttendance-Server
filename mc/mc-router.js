@@ -15,7 +15,7 @@ MCRouter.route("/classes")
 
     const knexInstance = req.app.get("db");
     MCService.listClasses(knexInstance, mcid)
-      .then(results => {
+      .then((results) => {
         res.json(results);
       })
       .catch(next);
@@ -36,30 +36,27 @@ MCRouter.route("/classes")
 
     const knexInstance = req.app.get("db");
 
-    MCService.addClass(knexInstance, newClass).then(result => {
-      res
-        .status(201)
-        .location(`api/class/${result.id}`)
-        .json(result);
+    MCService.addClass(knexInstance, newClass).then((result) => {
+      res.status(201).location(`api/class/${result.id}`).json(result);
     });
   });
 
 MCRouter.route("/class")
   // FIND A SINGLE CLASS BY CLASS ID
   .get((req, res, next) => {
-  const { classid } = req.query;
+    const { classid } = req.query;
 
-  if (!classid) {
-    res.status(400).json({ error: "Please provide an classid value" });
-  }
+    if (!classid) {
+      res.status(400).json({ error: "Please provide an classid value" });
+    }
 
-  const knexInstance = req.app.get("db");
-  MCService.getClass(knexInstance, classid)
-    .then(results => {
-      res.json(results);
-    })
-    .catch(next);
-});
+    const knexInstance = req.app.get("db");
+    MCService.getClass(knexInstance, classid)
+      .then((results) => {
+        res.json(results);
+      })
+      .catch(next);
+  });
 
 MCRouter.route("/users")
   // LIST ALL USERS FOR YOUR MARKET CENTER
@@ -72,7 +69,7 @@ MCRouter.route("/users")
 
     const knexInstance = req.app.get("db");
     MCService.listUsers(knexInstance, mcid)
-      .then(results => {
+      .then((results) => {
         res.json(results);
       })
       .catch(next);
@@ -86,7 +83,7 @@ MCRouter.route("/users")
     const { username, mcid } = req.body;
 
     MCService.checkForUserName(knexInstance, username, mcid)
-      .then(result => {
+      .then((result) => {
         if (Number(result[0].count)) {
           return res.status(403).json({ error: "Username already exists" });
         } else {
@@ -98,7 +95,7 @@ MCRouter.route("/users")
             username,
             password,
             email,
-            mcid
+            mcid,
           } = req.body;
 
           const lvl = 1;
@@ -110,13 +107,13 @@ MCRouter.route("/users")
             password,
             lvl,
             email,
-            mcid
+            mcid,
           };
 
           for (const [key, value] of Object.entries(newUser)) {
             if (value == null) {
               return res.status(400).json({
-                error: { message: `Missing '${key}' in request body` }
+                error: { message: `Missing '${key}' in request body` },
               });
             }
           }
@@ -124,13 +121,10 @@ MCRouter.route("/users")
           // CALL FUNCTION TO POST USER
 
           MCService.addUser(knexInstance, newUser)
-            .then(result => {
+            .then((result) => {
               console.log(result);
 
-              res
-                .status(202)
-                .location(`api/users/${result.id}`)
-                .json(result);
+              res.status(201).location(`api/users/${result.id}`).json(result);
             })
             .catch(next);
         }
@@ -148,14 +142,14 @@ MCRouter.route("/stats/totalclasses").get((req, res, next) => {
 
   const knexInstance = req.app.get("db");
   MCService.getTotalClasses(knexInstance, mcid)
-    .then(results => {
+    .then((results) => {
       res.json(results);
     })
     .catch(next);
 });
 
 // GET TOTAL NUMBER OF CHECK-INS FOR YOUR MARKET CENTER
-CRouter.route("/stats/totalcheckins").get((req, res, next) => {
+MCRouter.route("/stats/totalcheckins").get((req, res, next) => {
   const mcid = req.get("mcid");
 
   if (!mcid) {
@@ -164,7 +158,7 @@ CRouter.route("/stats/totalcheckins").get((req, res, next) => {
 
   const knexInstance = req.app.get("db");
   MCService.getTotalCheckIns(knexInstance, mcid)
-    .then(results => {
+    .then((results) => {
       res.json(results);
     })
     .catch(next);
@@ -180,7 +174,7 @@ MCRouter.route("/stats/totalagents").get((req, res, next) => {
 
   const knexInstance = req.app.get("db");
   MCService.getTotalAgents(knexInstance, mcid)
-    .then(results => {
+    .then((results) => {
       res.json(results);
     })
     .catch(next);
@@ -196,7 +190,7 @@ MCRouter.route("/stats/getname").get((req, res, next) => {
 
   const knexInstance = req.app.get("db");
   MCService.getMCName(knexInstance, mcid)
-    .then(results => {
+    .then((results) => {
       res.json(results);
     })
     .catch(next);

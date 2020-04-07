@@ -43,7 +43,14 @@ CheckInRouter.route("/")
 
             // POST NEW LOGIN
             CheckInService.CheckIn(knexInstance, newCheckIn)
-              .then(res.status(201).json({ notification: "User Signed In!" }))
+              .then(
+                res
+                  .status(201)
+                  .json({
+                    notification:
+                      "User Signed In!  Please pass the tablet to the next user!",
+                  })
+              )
               .catch();
           }
         });
