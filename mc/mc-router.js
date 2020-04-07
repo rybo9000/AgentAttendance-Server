@@ -5,6 +5,7 @@ const MCRouter = express.Router();
 const jsonParser = express.json();
 
 MCRouter.route("/classes")
+  // LIST ALL THE CLASSES FOR YOUR MARKET CENTER
   .get((req, res, next) => {
     const mcid = req.get("mcid");
 
@@ -19,6 +20,7 @@ MCRouter.route("/classes")
       })
       .catch(next);
   })
+  // ADD A NEW CLASS FOR YOUR MARKET CENTER
   .post(jsonParser, (req, res, next) => {
     const { classname, mcid } = req.body;
 
@@ -42,7 +44,9 @@ MCRouter.route("/classes")
     });
   });
 
-MCRouter.route("/class").get((req, res, next) => {
+MCRouter.route("/class")
+  // FIND A SINGLE CLASS BY CLASS ID
+  .get((req, res, next) => {
   const { classid } = req.query;
 
   if (!classid) {
@@ -58,6 +62,7 @@ MCRouter.route("/class").get((req, res, next) => {
 });
 
 MCRouter.route("/users")
+  // LIST ALL USERS FOR YOUR MARKET CENTER
   .get((req, res, next) => {
     const mcid = req.get("mcid");
 
@@ -72,6 +77,7 @@ MCRouter.route("/users")
       })
       .catch(next);
   })
+  // ADD A NEW USER FOR YOUR MARKET CENTER
   .post(jsonParser, (req, res, next) => {
     const knexInstance = req.app.get("db");
 
@@ -132,6 +138,7 @@ MCRouter.route("/users")
       .catch(next);
   });
 
+// GET TOTAL NUMBER OF CLASSES FOR YOUR MARKET CENTER
 MCRouter.route("/stats/totalclasses").get((req, res, next) => {
   const mcid = req.get("mcid");
 
@@ -147,7 +154,8 @@ MCRouter.route("/stats/totalclasses").get((req, res, next) => {
     .catch(next);
 });
 
-MCRouter.route("/stats/totalcheckins").get((req, res, next) => {
+// GET TOTAL NUMBER OF CHECK-INS FOR YOUR MARKET CENTER
+CRouter.route("/stats/totalcheckins").get((req, res, next) => {
   const mcid = req.get("mcid");
 
   if (!mcid) {
@@ -162,6 +170,7 @@ MCRouter.route("/stats/totalcheckins").get((req, res, next) => {
     .catch(next);
 });
 
+// GET TOTAL NUMBER OF AGENTS FOR YOUR MARKET CENTER
 MCRouter.route("/stats/totalagents").get((req, res, next) => {
   const mcid = req.get("mcid");
 
@@ -177,6 +186,7 @@ MCRouter.route("/stats/totalagents").get((req, res, next) => {
     .catch(next);
 });
 
+// GET NAME OF MARKET CENTER FROM THE DATABASE
 MCRouter.route("/stats/getname").get((req, res, next) => {
   const mcid = req.get("mcid");
 
